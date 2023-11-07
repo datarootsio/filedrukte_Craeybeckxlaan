@@ -9,13 +9,15 @@ from playwright.sync_api import sync_playwright
 import time
 import toml
 
+city = "Deurne"
+
 # Load URLs from the config file
 config_file_path = 'config.toml'
 with open(config_file_path, 'r') as f:
     config = toml.load(f)
 
 # Retrieve the URLs for the 'leuven' section
-URLS = list(config['Deurne'].values())
+URLS = list(config[city].values())
 
 # Directory to store resulting png images in.
 dst = Path("./shots")
@@ -44,7 +46,7 @@ def main():
         page = context.new_page()
 
         # Go through each URL and take a screenshot
-        for url in URLS:
+        for streetname, url in config[city].items():
             page.goto(url)
             # Replace 'Alles accepteren' with the text of the button to accept cookies in your language
             for i, el in enumerate(page.get_by_label("Alles accepteren").all()):
@@ -57,8 +59,7 @@ def main():
             now_local = now_utc.astimezone(ZoneInfo("Europe/Brussels"))
             timestr = now_local.strftime("%Y%m%d-%H%M%S")
             # Extract the street name from the URL for naming the screenshot
-            streetname = url.split('@')[1].split(',')[0]  # Simplistic extraction method, might need refinement
-            shot_file = dst / f"leuven_{streetname}_{timestr}.png"
+            shot_file = dst / f"{city}_{streetname}_{timestr}.png"
             page.screenshot(path=shot_file.as_posix())
             logger.info(f"Took shot {shot_file.as_posix()} on {timestr}.")
 

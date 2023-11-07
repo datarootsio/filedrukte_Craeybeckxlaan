@@ -2,7 +2,7 @@ name: run main.py
 
 on:
   schedule:
-    - cron: '*/2 * * * *' # Every 2 minutes
+    - cron: '*/2 7-20 * * *' # Every 2 minutes between 7 and 20
   workflow_dispatch:
   push:
     branches: [ "main" ]
