@@ -47,7 +47,7 @@ def main():
 
         # Go through each URL and take a screenshot
         for streetname in config[location]:
-            url = config[location][streetname][“url”]
+            url = config[location][streetname]["url"]
             page.goto(url)
             # Replace 'Alles accepteren' with the text of the button to accept cookies in your language
             for i, el in enumerate(page.get_by_label("Alles accepteren").all()):
